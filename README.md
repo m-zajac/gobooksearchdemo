@@ -1,5 +1,5 @@
 
-# Book Search Demo [![Build Status](https://travis-ci.org/m-zajac/gobooksearchdemo.svg?branch=master)](https://travis-ci.org/m-zajac/gobooksearchdemo) [![Go Report Card](https://goreportcard.com/badge/github.com/m-zajac/gobooksearchdemo)](https://goreportcard.com/report/github.com/m-zajac/gobooksearchdemo) [![Docs](https://pkg.go.dev/badge/github.com/m-zajac/gobooksearchdemo)](https://pkg.go.dev/github.com/m-zajac/gobooksearchdemo)
+# Book Search Demo [![Build Status](https://travis-ci.org/m-zajac/gobooksearchdemo.svg?branch=master)](https://travis-ci.org/m-zajac/gobooksearchdemo) [![Go Report Card](https://goreportcard.com/badge/github.com/m-zajac/gobooksearchdemo)](https://goreportcard.com/report/github.com/m-zajac/gobooksearchdemo)
 
 A small project to demonstrate how I write go code today :)
 
