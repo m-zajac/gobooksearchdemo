@@ -10,4 +10,3 @@ case "$1" in
 		exec /server "$@" ;;
 	*) exec "$@"
 esac
-

@@ -8,7 +8,7 @@ A small project to demonstrate how I write go code today :)
 The goal is to write an appllication that fetches a book (from gutenber.org website), and then performs a fuzzy search given a phrase. Result should be the whole paragraph containg matching phrase. 
 Application provides REST server and CLI version. Docker image is provided for easier use.
 
-Code should be written as in serious project. Code readability, reliability are the most important. Code should be easy to test and expand.
+Code should be written as in serious project. Code readability, reliability are the most important. Code should be easy to test and expand. Code should have healthy amount of unit tests.
 
 ## Description
 

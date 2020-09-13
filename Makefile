@@ -1,4 +1,4 @@
-.PHONY: build test clean image loadtest
+.PHONY: build test clean lint lint-more image generate
 
 build: generate
 	go build ./cmd/cli
@@ -11,7 +11,6 @@ clean:
 	rm -f ./cli
 	rm -f ./server
 	rm -rf ./data
-
 
 lint: $(shell go env GOPATH)/bin/golint
 	@$(shell go env GOPATH)/bin/golint -set_exit_status `go list ./... | grep -v /vendor/`
