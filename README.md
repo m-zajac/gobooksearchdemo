@@ -8,7 +8,11 @@ A small project to demonstrate how I write go code today :)
 The goal is to write an appllication that fetches a book (from gutenber.org website), and then performs a fuzzy search given a phrase. Result should be the whole paragraph containg matching phrase. 
 Application provides REST server and CLI version. Docker image is provided for easier use.
 
+Code should be written as in serious project. Code readability, reliability are the most important. Code should be easy to test and expand.
+
 ## Description
+
+### Search algorithm
 
 Search is implemented using modified Levenstein distance algorithm.
 For DP Levenstein distance algorithm see: https://en.wikipedia.org/wiki/Levenshtein_distance#Iterative_with_full_matrix.
@@ -18,6 +22,10 @@ Search returns first of best matches.
 Time complexity is `O(nk)`, where `n` is the text size and `k` is search phraze size.
 
 Space complexity is `O(n)`.
+
+### Book source
+
+Plain text version of books is fetched from gutenberg.org website. Once fetched, book is stored in local database (gzipped). Subsequent searches in a book will use local data.
 
 ## Finding id of a book
 
@@ -49,11 +57,11 @@ Example:
     docker run --rm -ti -v "$(pwd)"/data:/data mxzajac/gobooksearchdemo cli -l error -id 1513 -f 2 -p 'oh romeo romeo' 
 
 Arguments:
-- '-id' - book id
-- '-p' - phrase to search (case insensitive)
-- '-f' - fuzziness (maximum edit distance frract match to given phrase)
-- '-l' - log level [debug, info, error (default)]
-- '-dbf' - file for local books database (default: /data/bookdata.db)
+- `-id` - book id
+- `-p` - phrase to search (case insensitive)
+- `-f` - fuzziness (maximum edit distance frract match to given phrase)
+- `-l` - log level [debug, info, error (default)]
+- `-dbf` - file for local books database (default: /data/bookdata.db)
 
 ### Server
 
@@ -62,9 +70,9 @@ Example:
     docker run --rm -ti -p 8080:8080 -v "$(pwd)"/data:/data mxzajac/gobooksearchdemo server
 
 Arguments:
-- '-p' - server port *(default: 8080)
-- '-l' - log level [debug, info, error (default)]
-- '-dbf' - file for local books database (default: /data/bookdata.db)
+- `-p` - server port *(default: 8080)
+- `-l` - log level [debug, info, error (default)]
+- `-dbf` - file for local books database (default: /data/bookdata.db)
 
 #### REST API Documetation
 

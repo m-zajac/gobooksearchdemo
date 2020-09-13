@@ -64,5 +64,5 @@ func main() {
 		fmt.Printf("Phrase not found.\n")
 		return
 	}
-	fmt.Printf("Phrase found\n\n%s\n", paragraph)
+	fmt.Printf("Phrase found.\n\n%s\n", paragraph)
 }
