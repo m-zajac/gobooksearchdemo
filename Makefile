@@ -17,10 +17,10 @@ lint: $(shell go env GOPATH)/bin/golint
 lint-more: $(shell go env GOPATH)/bin/golangci-lint
 	@$(shell go env GOPATH)/bin/golangci-lint run ./...
 
-# image:
-# 	ln -sf ./build/Dockerfile .
-# 	docker build -t goprojectdemo .
-# 	rm ./Dockerfile
+image:
+	ln -sf ./build/Dockerfile .
+	docker build -t gobooksearchdemo .
+	rm ./Dockerfile
 
 # loadtest:
 # 	wrk --latency -d 15m -t 2 -c 15 -s scripts/loadtest.lua http://localhost:8080

@@ -16,6 +16,8 @@ const (
 	BookSizeLimit = 1024 * 1024 * 100
 	// FetchTimeout defines maximum time for book fetches.
 	FetchTimeout = 30 * time.Second
+
+	gutenbergAddr = "https://www.gutenberg.org"
 )
 
 // Source can fetch books from gutenberg.org by id.
@@ -44,9 +46,7 @@ func (s *Source) Fetch(id string) (bool, string, error) {
 		return false, "", nil
 	}
 
-	start := time.Now()
 	found, data, err := s.fetchBookFile(id, fileName)
-	duration := time.Now().Sub(start)
 	if err != nil {
 		return false, "", fmt.Errorf("fetching book file: %w", err)
 	}
@@ -54,19 +54,13 @@ func (s *Source) Fetch(id string) (bool, string, error) {
 		return false, "", nil
 	}
 
-	logrus.WithFields(logrus.Fields{
-		"bookId":   id,
-		"size":     len(data),
-		"respTime": duration.String(),
-	}).Debug("gutenberg: fetched book")
-
 	return true, string(data), nil
 }
 
 func (s *Source) findFileName(id string) (string, error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf("https://www.gutenberg.org/files/%s/?F=0", id),
+		fmt.Sprintf("%s/files/%s/?F=0", gutenbergAddr, id),
 		nil,
 	)
 	if err != nil {
@@ -74,6 +68,9 @@ func (s *Source) findFileName(id string) (string, error) {
 	}
 
 	found, listing, err := s.fetch(req)
+	if err != nil {
+		return "", err
+	}
 	if !found {
 		return "", nil
 	}
@@ -85,7 +82,7 @@ func (s *Source) findFileName(id string) (string, error) {
 func (s *Source) fetchBookFile(id string, fileName string) (bool, string, error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf("https://www.gutenberg.org/files/%s/%s", id, fileName),
+		fmt.Sprintf("%s/files/%s/%s", gutenbergAddr, id, fileName),
 		nil,
 	)
 	if err != nil {
@@ -96,7 +93,9 @@ func (s *Source) fetchBookFile(id string, fileName string) (bool, string, error)
 }
 
 func (s *Source) fetch(req *http.Request) (bool, string, error) {
+	start := time.Now()
 	resp, err := s.httpCli.Do(req)
+	duration := time.Since(start)
 	if err != nil {
 		return false, "", fmt.Errorf("making http request: %w", err)
 	}
@@ -113,6 +112,11 @@ func (s *Source) fetch(req *http.Request) (bool, string, error) {
 	if err != nil {
 		return true, "", fmt.Errorf("reading response: %w", err)
 	}
+
+	logrus.WithFields(logrus.Fields{
+		"size":     len(data),
+		"respTime": duration.String(),
+	}).Debugf("gutenberg: fetched url: %s", req.URL.String())
 
 	return true, string(data), nil
 }
