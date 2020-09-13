@@ -68,7 +68,7 @@ func (s *Service) FindBookParagraph(bookID string, phrase string, fuzziness uint
 		[]rune(lowerData),
 		fuzziness,
 	)
-	duration := time.Now().Sub(start)
+	duration := time.Since(start)
 
 	logrus.Debugf("fuzzysearch: search time: %s", duration.String())
 

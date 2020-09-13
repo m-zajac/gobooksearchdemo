@@ -78,7 +78,7 @@ func (c *BoltCache) Store(id string, entry app.BookCacheEntry) error {
 			return fmt.Errorf("creating bolt bucket: %w", err)
 		}
 		if err = bucket.Put([]byte(id), entryData); err != nil {
-			return fmt.Errorf("puting data to bolt bucket: %w", err)
+			return fmt.Errorf("putting data to bolt bucket: %w", err)
 		}
 		return nil
 	})
@@ -100,11 +100,6 @@ func (c *BoltCache) Close() error {
 		return fmt.Errorf("closing bolt db: %w", err)
 	}
 	return nil
-}
-
-type cacheEntry struct {
-	Found bool
-	Data  string
 }
 
 func encodeCacheEntry(entry app.BookCacheEntry) ([]byte, error) {

@@ -1,0 +1,82 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {},
+        "license": {}
+    },
+    "paths": {
+        "/search": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API"
+                ],
+                "summary": "Searches book for a phrase",
+                "operationId": "search",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/api.searchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.searchResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Book not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.searchRequest": {
+            "type": "object",
+            "properties": {
+                "bookId": {
+                    "type": "string"
+                },
+                "fuzziness": {
+                    "type": "integer",
+                    "default": 2
+                },
+                "phrase": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.searchResponse": {
+            "type": "object",
+            "properties": {
+                "paragraph": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

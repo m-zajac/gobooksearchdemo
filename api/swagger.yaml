@@ -1,0 +1,52 @@
+definitions:
+  api.searchRequest:
+    properties:
+      bookId:
+        type: string
+      fuzziness:
+        default: 2
+        type: integer
+      phrase:
+        type: string
+    type: object
+  api.searchResponse:
+    properties:
+      paragraph:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /search:
+    post:
+      operationId: search
+      parameters:
+      - description: request
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/api.searchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.searchResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "404":
+          description: Book not found
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Searches book for a phrase
+      tags:
+      - API
+swagger: "2.0"

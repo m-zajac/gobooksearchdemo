@@ -4,7 +4,10 @@ import (
 	"math"
 )
 
-// FuzzySearch - description TODO
+// FuzzySearch searches given phrase using modified Levenstein distance algorithm.
+// For Levenstein distance algorithm see: https://en.wikipedia.org/wiki/Levenshtein_distance#Iterative_with_full_matrix.
+// This is similar dynamic programming approach, but first dp array row is filled with zeroes.
+//
 // Returns index of last letter of matching phrase.
 func FuzzySearch(needle []rune, haystack []rune, acceptableDistance uint) (bool, int) {
 	if len(needle) == 0 {

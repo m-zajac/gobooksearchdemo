@@ -1,14 +1,16 @@
 .PHONY: build test clean image loadtest
 
-build:
+build: generate
 	go build ./cmd/cli
+	go build ./cmd/server
 
 test:
 	go test -race ./...
 
 clean:
 	rm -f ./cli
-	rm -f ./bookdata.db
+	rm -f ./server
+	rm -rf ./data
 
 
 lint: $(shell go env GOPATH)/bin/golint
@@ -22,11 +24,14 @@ image:
 	docker build -t gobooksearchdemo .
 	rm ./Dockerfile
 
-# loadtest:
-# 	wrk --latency -d 15m -t 2 -c 15 -s scripts/loadtest.lua http://localhost:8080
+generate: $(shell go env GOPATH)/bin/swag
+	GOFLAGS="-mod=readonly" go generate ./...
 
 $(shell go env GOPATH)/bin/golint:
 	@GOFLAGS="-mod=readonly" go get golang.org/x/lint/golint
 
 $(shell go env GOPATH)/bin/golangci-lint:
 	@GOFLAGS="-mod=readonly" go get github.com/golangci/golangci-lint/cmd/golangci-lint
+
+$(shell go env GOPATH)/bin/swag:
+	@GOFLAGS="-mod=readonly" go get github.com/swaggo/swag/cmd/swag@v1.6.6-0.20200323071853-8e21f4cefeea

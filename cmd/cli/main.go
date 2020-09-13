@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/m-zajac/gobooksearchdemo/internal/adapters/bookcache"
@@ -17,6 +16,7 @@ func main() {
 	phrase := flag.String("p", "", "search phrase")
 	fuziness := flag.Uint("f", 2, "fuzzinnes - maximum edit distance frract match to given phrase")
 	logLevel := flag.String("l", "error", "log level [debug, info, error (default)]")
+	dbFileName := flag.String("dbf", "./data/bookdata.db", "local db file name (default: /data/bookdata.db)")
 	flag.Parse()
 
 	if *bookID == "" {
@@ -42,14 +42,14 @@ func main() {
 
 	bs := gutenberg.NewSource()
 
-	bc, err := bookcache.NewBoltCache("./bookdata.db")
+	bc, err := bookcache.NewBoltCache(*dbFileName)
 	if err != nil {
-		log.Fatalf("creating book cache: %v", err)
+		logrus.Fatalf("creating book cache: %v", err)
 	}
 
 	service, err := app.NewService(bs, bc)
 	if err != nil {
-		log.Fatalf("creating book search service: %v", err)
+		logrus.Fatalf("creating book search service: %v", err)
 	}
 
 	paragraph, err := service.FindBookParagraph(*bookID, *phrase, *fuziness)
@@ -57,7 +57,7 @@ func main() {
 		fmt.Printf("Book with id '%s' not found\n", *bookID)
 		return
 	} else if err != nil {
-		log.Fatalf("searching for paragraph in book '%s': %v", *bookID, err)
+		logrus.Fatalf("searching for paragraph in book '%s': %v", *bookID, err)
 	}
 
 	if paragraph == "" {
